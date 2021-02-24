@@ -1,32 +1,37 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Navbar/>
     <router-view/>
   </div>
 </template>
 
+<script lang="ts">
+import Vue from 'vue'
+import Navbar from './components/Navbar.vue'
+
+export default Vue.extend({
+  name: `App`,
+  components: {
+    Navbar
+  }
+})
+</script>
+
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  color: #fff;
+  margin: 0px;
+  padding: 0px;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+body {
+  background-color: #36393f;
+  margin: 0px;
+  padding: 0px;
 }
 </style>
