@@ -5,19 +5,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'Home',
-  components: {
-  },
+  name: "Home",
+  components: {},
   methods: {
     checkLogin() {
       if (!this.$store.state.loggedIn) this.$router.push({ path: "/login" });
     }
   },
   mounted: function() {
-    this.checkLogin()
+    this.checkLogin();
+    this.$nextTick(() => {
+      this.$store.commit("showDrawer");
+    });
   }
 });
 </script>

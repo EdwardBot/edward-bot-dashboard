@@ -8,9 +8,20 @@ export default new Vuex.Store({
     login: {
       loggedIn: false,
       username: ''
-    }
+    },
+    hasDrawer: false,
+    showDrawer: true
   },
   mutations: {
+    hideDrawer(state: any) {
+      state.hasDrawer = false
+    },
+    showDrawer(state: any) {
+      state.hasDrawer = true
+    },
+    toggleDrawer(state: any) {
+      state.showDrawer = !state.showDrawer
+    }
   },
   actions: {
   },
