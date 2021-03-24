@@ -33,26 +33,30 @@ export default Vue.extend({
   },
   methods: {
     redirect() {
-      window.location.assign("https://discord.com/api/oauth2/authorize?client_id=747157043466600477&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin&response_type=code&scope=identify%20email%20guilds");
+      const win = window.open("http://localhost:3000/v1/auth/login", "OAuth2", "status=0,width=530,height=850");
+      if (win != null) {
+        win.onload = (e: Event) => {
+          console.log(`asd`)
+          console.log(win.location)
+        }
+        win.onstorage = (e: StorageEvent) => {
+          console.log(e)
+        }
+      }
     }
   },
   mounted() {
     this.$nextTick(async () => {
       this.$store.commit("hideDrawer");
-      if (this.$route.query.code) {
-          this.completeing = true
-          const resp = await axios.get(`http://localhost:3000/auth/login?code=${this.$route.query.code}&redirect=${encodeURIComponent(window.location.href)}`, {
-              headers: {
-                  'Access-Control-Allow-Origin': '*'
-              }
-          })
-          if (resp.status != 200) {
-              alert(`Hiba történt!`)
-              return
-          }
-          alert(`Sikeres bejelentkezés\nkód:${resp.data.token}`)
+      window.onmessage = (e: MessageEvent) => {
+        if ((e.data as string).startsWith && (e.data as string)?.startsWith("d")) {
+          this.$store.dispatch("login", JSON.parse((e.data as string).substring(1)))
+        }
       }
     });
+  },
+  beforeDestroy() {
+    window.onmessage = null;
   }
 });
 </script>

@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     login: {
       loggedIn: false,
-      username: ''
+      username: '',
+      token: '',
+      id: -1
     },
     hasDrawer: false,
     showDrawer: true
@@ -21,9 +23,23 @@ export default new Vuex.Store({
     },
     toggleDrawer(state: any) {
       state.showDrawer = !state.showDrawer
+    },
+    setToken(state: any, token: string) {
+      state.login.token = token
+    },
+    setId(state: any, id: number) {
+      state.login.id = id
     }
   },
   actions: {
+    login(store, payload) {
+      if (payload.status != "success") {
+        //show error
+        return
+      }
+      store.commit("setToken", payload.token)
+      store.commit(`setId`, payload.id)
+    }
   },
   modules: {
   }
