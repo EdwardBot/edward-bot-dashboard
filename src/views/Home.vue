@@ -12,7 +12,7 @@ export default Vue.extend({
   components: {},
   methods: {
     checkLogin() {
-      if (!this.$store.state.loggedIn) this.$router.push({ path: "/login" });
+      if (!this.$store.state.login.loggedIn) this.$router.push({ path: "/login" });
     }
   },
   mounted: function() {

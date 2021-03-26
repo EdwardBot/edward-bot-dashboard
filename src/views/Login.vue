@@ -11,37 +11,28 @@
     >
       <h1>Bejelentkezés</h1>
       <div class="spacer"></div>
-      <v-btn elevation="6" large color="#7289da" v-on:click="redirect()" v-if="!completeing"
-        ><v-icon>mdi-discord</v-icon> Bejelentkezés discordal</v-btn
+      <v-btn elevation="6" large color="#7289da" v-on:click="redirect()"
+        ><v-icon>mdi-discord</v-icon> Bejelentkezés discorddal</v-btn
       >
-      <p v-if="completeing">Kérlek várj!</p>
     </v-sheet>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import axios from "axios";
 
 export default Vue.extend({
   name: `Login`,
   components: {},
   data: () => {
     return {
-      completeing: false
     };
   },
   methods: {
     redirect() {
       const win = window.open("http://localhost:3000/v1/auth/login", "OAuth2", "status=0,width=530,height=850");
       if (win != null) {
-        win.onload = (e: Event) => {
-          console.log(`asd`)
-          console.log(win.location)
-        }
-        win.onstorage = (e: StorageEvent) => {
-          console.log(e)
-        }
+        console.log(`Error opening window`)
       }
     }
   },
@@ -51,6 +42,7 @@ export default Vue.extend({
       window.onmessage = (e: MessageEvent) => {
         if ((e.data as string).startsWith && (e.data as string)?.startsWith("d")) {
           this.$store.dispatch("login", JSON.parse((e.data as string).substring(1)))
+          if (this.$store.state.login.loggedIn) this.$router.push({path: "/"})
         }
       }
     });

@@ -29,6 +29,9 @@ export default new Vuex.Store({
     },
     setId(state: any, id: number) {
       state.login.id = id
+    },
+    setLoggedIn(state: any, loggedIn: boolean) {
+      state.login.loggedIn = loggedIn
     }
   },
   actions: {
@@ -39,6 +42,7 @@ export default new Vuex.Store({
       }
       store.commit("setToken", payload.token)
       store.commit(`setId`, payload.id)
+      store.commit(`setLoggedIn`, true)
     }
   },
   modules: {
