@@ -21,10 +21,14 @@ export default Vue.extend({
     Navbar,
     Drawer
   },
-
-  data: () => ({
-    //
-  }),
+  mounted() {
+    if (localStorage.getItem("token") && localStorage.getItem("s_id")) {
+      this.$store.commit(`setToken`, localStorage.getItem(`token`))
+      this.$store.commit(`setId`, localStorage.getItem("s_id"))
+      this.$store.dispatch(`refresh`)
+      this.$store.dispatch(`fetchUserInfo`)
+    }
+  }
 });
 </script>
 

@@ -19,7 +19,7 @@
         >Főoldal</v-btn
       >
       <v-btn elevation="0" v-on:click="clickBtn(1)">{{
-        isLoggedIn ? username : "Bejelentkezés"
+        isLoggedIn ? displayName : "Bejelentkezés"
       }}</v-btn>
       <v-btn elevation="0" v-on:click="clickBtn(5)"
         ><v-icon>mdi-logout</v-icon></v-btn
@@ -41,8 +41,8 @@ export default Vue.extend({
     isLoggedIn: function(): boolean {
       return this.$store.state.login.loggedIn;
     },
-    username: function(): string {
-      return this.$store.state.login.username;
+    displayName: function(): string {
+      return `${this.$store.state.login.username}#${this.$store.state.login.discriminator}`;
     },
     shouldOpenDrawer: function(): boolean {
       return this.$store.state.hasDrawer;
@@ -60,6 +60,10 @@ export default Vue.extend({
           break;
         case 4:
           this.$router.push("/login");
+          break;
+        case 5:
+          this.$store.dispatch("logout")
+            if (!this.$store.state.login.loggedIn) this.$router.push("/login");
           break;
       }
     },
