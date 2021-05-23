@@ -76,7 +76,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .navbar {
-  background-color: #10ac84;
+  background-color: var(--main-green);
   height: 50px;
   display: inline-flex;
   flex-direction: row;
@@ -89,7 +89,7 @@ export default Vue.extend({
     flex-direction: row;
     cursor: pointer;
     padding-right: 10px;
-    background-color: #1dd1a1;
+    background-color: var(--lighter-green);
     .brandLogo {
       display: inline-flex;
       width: 50px;
@@ -112,7 +112,7 @@ export default Vue.extend({
       margin-top: 6px;
       margin-right: 5px;
       color: #fff;
-      background-color: #10ac84 !important;
+      background-color: var(--main-green) !important;
     }
   }
   .btnGroup {
@@ -122,7 +122,7 @@ export default Vue.extend({
       margin-top: 6px;
       margin-right: 5px;
       color: #fff;
-      background-color: #10ac84 !important;
+      background-color: var(--main-green) !important;
     }
     .cart {
       .badge {
@@ -135,7 +135,7 @@ export default Vue.extend({
   }
   .showNav {
     button {
-      background-color: #10ac84 !important;
+      background-color: var(--main-green) !important;
       color: #fff;
       margin-top: 6px;
       margin-right: 5px;

@@ -39,6 +39,7 @@ export default Vue.extend({
   mounted() {
     this.$nextTick(async () => {
       this.$store.commit("hideDrawer");
+      this.$store.commit("setSelectedGuild", "")
       window.onmessage = (e: MessageEvent) => {
         if ((e.data as string).startsWith && (e.data as string)?.startsWith("d")) {
           this.$store.dispatch("login", JSON.parse((e.data as string).substring(1)))

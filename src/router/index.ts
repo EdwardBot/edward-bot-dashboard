@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import GuildOverview from "@/views/guild/GuildOverview.vue";
 
 Vue.use(VueRouter)
 
@@ -20,12 +21,16 @@ const routes: Array<RouteConfig> = [
     path: '/login',
     name: 'Login',
     component: Login
+  },{
+    path: `/guild/:id`,
+    name: `GuildOverview`,
+    component: GuildOverview
   }
 ]
 
 const router = new VueRouter({
   routes,
-  mode: 'history'
+  mode: 'history',
 })
 
 export default router

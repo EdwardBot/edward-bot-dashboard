@@ -21,12 +21,17 @@ export default Vue.extend({
     Navbar,
     Drawer
   },
-  mounted() {
+  async mounted() {
     if (localStorage.getItem("token") && localStorage.getItem("s_id")) {
       this.$store.commit(`setToken`, localStorage.getItem(`token`))
       this.$store.commit(`setId`, localStorage.getItem("s_id"))
-      this.$store.dispatch(`refresh`)
-      this.$store.dispatch(`fetchUserInfo`)
+      await this.$store.dispatch(`refresh`)
+      if (this.$store.state.login.loggedIn) {
+        await this.$router.push({
+          path: `/`
+        })
+      }
+      await this.$store.dispatch(`fetchUserInfo`)
     }
   }
 });
@@ -34,6 +39,13 @@ export default Vue.extend({
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+:root {
+  --darker-back: #23272d;
+  --main-green: #10ac84;
+  --lighter-green: #1dd1a1;
+}
+
 .app {
   display: inline-flex;
   flex-direction: row;
