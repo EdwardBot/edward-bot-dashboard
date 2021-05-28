@@ -33,6 +33,7 @@ export default Vue.extend({
       this.$store.commit("showDrawer");
       if (!this.$store.state.fetchedGuilds) await this.$store.dispatch(`fetchGuilds`);
       this.$store.commit("setSelectedGuild", "")
+      this.$store.commit("setSelectedGuildName", "")
     });
   }
 });

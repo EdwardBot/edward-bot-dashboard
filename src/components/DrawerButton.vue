@@ -1,5 +1,5 @@
 <template>
-  <div class="drawer-button" v-bind:class="{ selected: selected == true}" @click="navigateTo(data.path)">
+  <div class="drawer-button" v-bind:class="{ selected: data.path === $route.path}" @click="navigateTo(data.path)">
     <div class="icon-container">
       <v-icon class="icon">mdi-{{data.icon}}</v-icon>
     </div>
@@ -34,7 +34,7 @@ export default Vue.extend({
   display: flex;
   color: #ffffff;
   height: 45px;
-  width: 225px;
+  width: 100%;
   cursor: pointer;
   flex-direction: row;
   .icon-container {

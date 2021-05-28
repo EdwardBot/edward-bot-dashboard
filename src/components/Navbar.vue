@@ -21,7 +21,7 @@
       <v-btn elevation="0" v-on:click="clickBtn(1)">{{
         isLoggedIn ? displayName : "Bejelentkezés"
       }}</v-btn>
-      <v-btn elevation="0" v-on:click="clickBtn(5)"
+      <v-btn elevation="0" v-on:click="clickBtn(5)" v-if="$store.state.login.loggedIn" aria-label="Kilépés"
         ><v-icon>mdi-logout</v-icon></v-btn
       >
     </div>
@@ -42,7 +42,7 @@ export default Vue.extend({
       return this.$store.state.login.loggedIn;
     },
     displayName: function(): string {
-      return `${this.$store.state.login.username}#${this.$store.state.login.discriminator}`;
+      return `${this.$store.state.login.user.UserName}#${this.$store.state.login.user.Discriminator}`;
     },
     shouldOpenDrawer: function(): boolean {
       return this.$store.state.hasDrawer;
@@ -54,12 +54,8 @@ export default Vue.extend({
         case 0:
           this.$router.push("/");
           break;
-        case 3:
-          if (this.isLoggedIn) this.showUserDropdow = !this.showUserDropdow;
-          else this.$router.push("/login");
-          break;
-        case 4:
-          this.$router.push("/login");
+        case 1:
+          if (this.$store.state.login.loggedIn) this.$router.push("/profile");
           break;
         case 5:
           this.$store.dispatch("logout")

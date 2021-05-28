@@ -1,7 +1,9 @@
 <template>
   <div class="drawer" v-bind:class="{ 'drawer-open': show, 'drawer-closed': !show }">
+    <h4 class="category-name">Általános</h4>
     <DrawerButton :data="d" v-for="d in items" v-bind:key="d.name" @click="selected = d.id" :selected="selected == d.id"/>
     <div class="space"></div>
+    <h4 class="category-name">{{$store.state.selectedGuildName}}</h4>
     <DrawerButton :data="d" v-for="d in gOnlyItems" v-bind:key="d.name"/>
   </div>
 </template>
@@ -37,6 +39,11 @@ export default Vue.extend({
         path: `/guild/${this.$store.state.selectedGuild}`,
         icon: `newspaper-variant-outline`,
         id: 100
+      }, {
+        name: `Parancsok`,
+        path: `/guild/${this.$store.state.selectedGuild}/custom-commands`,
+        icon: `animation-outline`,
+        id: 101
       }]
     }
   }
@@ -45,14 +52,22 @@ export default Vue.extend({
 
 <style lang="scss">
 :root {
-  --drawer-width: 225px;
+  --drawer-width: 12vw;
 }
 .drawer {
+  display: flex;
+  flex-direction: column;
   background-color: #36393f;
   z-index: 30;
   overflow: hidden;
   height: 100%;
   color: #fff;
+  .category-name {
+    margin-top: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .drawer-open {

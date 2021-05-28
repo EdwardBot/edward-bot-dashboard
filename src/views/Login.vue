@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import {BASE_URL} from "@/utils/format";
 
 export default Vue.extend({
   name: `Login`,
@@ -30,7 +31,7 @@ export default Vue.extend({
   },
   methods: {
     redirect() {
-      const win = window.open("http://localhost:3000/v1/auth/login", "OAuth2", "status=0,width=530,height=850");
+      const win = window.open(`${BASE_URL}/v1/auth/login`, `OAuth2`, "status=0,width=530,height=850");
       if (win != null) {
         console.log(`Error opening window`)
       }

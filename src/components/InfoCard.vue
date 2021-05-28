@@ -22,10 +22,14 @@ export default Vue.extend({
   display: flex;
   background-color: var(--lighter-green);
   flex-direction: column;
-  max-width: 300px;
+  width: clamp(250px, 300px, 400px);
+  max-width: 400px;
+  flex-basis: clamp(250px, 300px, 400px);
+  flex-grow: 1;
   border-radius: 8px;
   padding: 5px;
   min-height: 50px;
+  margin: 5px;
   .value {
     margin-top: 15px;
     text-align: right;

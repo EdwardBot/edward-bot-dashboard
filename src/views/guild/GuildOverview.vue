@@ -1,10 +1,15 @@
 <template>
   <div class="guildOverview">
-    <div class="data" v-if="loaded">
-      <h1>Szerver: {{guildId}}</h1>
-      <InfoCard title="Ekkor csatlakozott a bot" :value="format(new Date(config.JoinedAt))"/>
+    <div class="data" v-if="loaded && config != undefined">
+      <h1>{{$store.state.selectedGuildName}}</h1>
+      <div class="info-cards">
+        <InfoCard title="Ekkor csatlakozott a bot" :value="format(new Date(config.guild.JoinedAt))"/>
+        <InfoCard title="Egyenleged" :value="`${config.wallet.Balance}$`"/>
+        <InfoCard title="Szinted" :value="`${config.wallet.Lvl}`"/>
+        <InfoCard title="Xp-d" :value="`${config.wallet.Xp}`"/>
+      </div>
     </div>
-    <div class="loading" v-if="!loaded">
+    <div class="loading" v-if="!loaded || config == undefined">
       <h1>Betöltés...</h1>
     </div>
   </div>
@@ -27,6 +32,7 @@ export default Vue.extend({
     this.guildId = this.$route.params.id
     if (this.$store.state.guildConfigs[this.guildId] == null) await this.$store.dispatch("fetchGuildConfig", this.guildId)
     this.config = this.$store.state.guildConfigs[this.guildId]
+    this.$store.commit("setSelectedGuildName", this.$store.state.guilds.find((g: any) => g.GID == this.guildId).Name)
     this.loaded = true
   },
   methods: {
@@ -45,5 +51,13 @@ export default Vue.extend({
   color: #fff;
   padding: 10px;
   flex-direction: column;
+  .data {
+    .info-cards {
+      display: flex;
+      flex-basis: clamp(250px, 300px, 400px);
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
 }
 </style>

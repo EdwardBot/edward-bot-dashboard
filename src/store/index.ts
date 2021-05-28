@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
+import {BASE_URL} from "@/utils/format";
 
 Vue.use(Vuex)
 
@@ -8,10 +9,9 @@ export default new Vuex.Store({
   state: {
     login: {
       loggedIn: false,
-      username: '',
       token: '',
       id: -1,
-      discriminator: ``,
+      user: {},
       sessionId: -1
     },
     hasDrawer: false,
@@ -20,7 +20,9 @@ export default new Vuex.Store({
     guildConfigs: {},
     users: {},
     fetchedGuilds: false,
-    selectedGuild: ""
+    selectedGuild: "",
+    selectedGuildName: "",
+    guidCommands: {}
   },
   mutations: {
     hideDrawer(state: any) {
@@ -42,11 +44,8 @@ export default new Vuex.Store({
     setLoggedIn(state: any, loggedIn: boolean) {
       state.login.loggedIn = loggedIn
     },
-    setUserName(state: any, username: string) {
-      state.login.username = username
-    },
-    setDiscriminator(state: any, discriminator: string) {
-      state.login.discriminator = discriminator
+    setUser(state: any, user: any) {
+      state.login.user = user
     },
     setSessionId(state: any, id: number) {
       state.login.sessionId = id
@@ -56,7 +55,7 @@ export default new Vuex.Store({
       state.guilds = guilds
     },
     setGuildConfig(state: any, gConfig: any) {
-      state.guildConfigs[gConfig.GuildId] = gConfig
+      state.guildConfigs[gConfig.guild.GuildId] = gConfig
     },
     cacheUser(state: any, user: any) {
       state.users[user.UserId] = user
@@ -66,6 +65,12 @@ export default new Vuex.Store({
     },
     setSelectedGuild(state: any, id: string) {
       state.selectedGuild = id
+    },
+    setSelectedGuildName(state: any, name: string) {
+      state.selectedGuildName = name
+    },
+    setGuildCommands(state: any, data: any) {
+      state.guidCommands[data.id] = data.data
     }
   },
   actions: {
@@ -90,7 +95,7 @@ export default new Vuex.Store({
       store.commit(`setSessionId`, -1)
     },
     async refresh(store) {
-      const res = await axios.post(`http://localhost:3000/v1/auth/refresh`, {
+      const res = await axios.post(`${BASE_URL}/v1/auth/refresh`, {
         id: store.state.login.id
       }, {
         headers: {
@@ -109,7 +114,7 @@ export default new Vuex.Store({
       store.dispatch(`fetchGuilds`)
     },
     async fetchUserInfo(store) {
-      const res = await axios.get(`http://localhost:3000/v1/auth/user`, {
+      const res = await axios.get(`${BASE_URL}/v1/auth/user`, {
         headers: {
           "Authorization": `Bearer ${store.state.login.token}`
         }
@@ -119,12 +124,11 @@ export default new Vuex.Store({
         store.dispatch(`logout`, false)
       } else {
         const payload = res.data
-        store.commit(`setUserName`, payload.username)
-        store.commit(`setDiscriminator`, payload.discriminator)
+        store.commit(`setUser`, payload)
       }
     },
     async fetchGuilds(store) {
-      const res = await axios.get(`http://localhost:3000/v1/guild/guilds/${store.state.login.id}`, {
+      const res = await axios.get(`${BASE_URL}/v1/guild/guilds/${store.state.login.id}`, {
         headers: {
           "Authorization": `Bearer ${store.state.login.token}`
         }
@@ -138,7 +142,20 @@ export default new Vuex.Store({
       store.commit(`setGuildsLoaded`)
     },
     async fetchGuildConfig(store, id) {
-      const res = await axios.get(`http://localhost:3000/v1/guild/guild/${id}`, {
+      const res = await axios.get(`${BASE_URL}/v1/guild/guild/${id}`, {
+        headers: {
+          "Authorization": `Bearer ${store.state.login.token}`
+        }
+      })
+      if (res.status != 200) {
+        //TODO handle error
+      } else {
+        store.commit("setGuildConfig", res.data)
+      }
+      console.log(`Cucc`)
+    },
+    async fetchUser(store, data: {gId: string; uId: string}) {
+      const res = await axios.get(`${BASE_URL}/v1/guild/guild/${data.gId}/user/${data.uId}`, {
         headers: {
           "Authorization": `Bearer ${store.state.login.token}`
         }
@@ -149,8 +166,8 @@ export default new Vuex.Store({
         store.commit("setGuildConfig", res.data)
       }
     },
-    async fetchUser(store, data: {gId: string; uId: string}) {
-      const res = await axios.get(`http://localhost:3000/v1/guild/guild/${data.gId}/user/${data.uId}`, {
+    async fetchCustomCommands(store, id: string) {
+      const res = await axios.get(`${BASE_URL}/v1/guild/guild/${id}/commands`, {
         headers: {
           "Authorization": `Bearer ${store.state.login.token}`
         }
@@ -158,7 +175,10 @@ export default new Vuex.Store({
       if (res.status != 200) {
         //TODO handle error
       } else {
-        store.commit("setGuildConfig", res.data)
+        store.commit("setGuildCommands", {
+          id: id,
+          data: res.data
+        })
       }
     }
   },

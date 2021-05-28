@@ -3,6 +3,8 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import GuildOverview from "@/views/guild/GuildOverview.vue";
+import Profile from "@/views/Profile.vue";
+import GuildCustomCommands from "@/views/guild/GuildCustomCommands.vue";
 
 Vue.use(VueRouter)
 
@@ -15,7 +17,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/about',
     name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "main" */ '../views/About.vue')
   },
   {
     path: '/login',
@@ -24,7 +26,15 @@ const routes: Array<RouteConfig> = [
   },{
     path: `/guild/:id`,
     name: `GuildOverview`,
-    component: GuildOverview
+    component: () => import(/* webpackChunkName: "main" */ '../views/guild/GuildOverview.vue')
+  }, {
+    path: `/profile`,
+    name: `Profile`,
+    component: () => import(/* webpackChunkName: "main" */ '../views/Profile.vue')
+  }, {
+    path: `/guild/:id/custom-commands`,
+    name: `GuildCustomCommands`,
+    component: () => import(/* webpackChunkName: "main" */ '../views/guild/GuildCustomCommands.vue')
   }
 ]
 
