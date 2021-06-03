@@ -42,6 +42,7 @@ export default Vue.extend({
     justify-content: center;
     align-items: center;
     background-color: var(--darker-back);
+    flex-shrink: 0;
     .icon {
       color: white !important;
     }

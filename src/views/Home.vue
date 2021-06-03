@@ -1,11 +1,14 @@
 <template>
   <div class="home">
-    <div class="container">
+    <div class="container" v-if="$store.state.fetchedGuilds">
       <h1>Szerverek:</h1>
       <div v-bind:key="g.ID" v-for="g in this.$store.state.guilds" class="guild-card" @click="goToGuild(g.GID)">
         <img :src="`https://cdn.discordapp.com/icons/${g.GID}/${g.Icon}.webp?size=128`" :alt="`${g.Name} ikonja`">
         <h1>{{g.Name}}</h1>
       </div>
+    </div>
+    <div class="container" v-if="!$store.state.fetchedGuilds">
+      <h1>Betöltés...</h1>
     </div>
   </div>
 </template>
@@ -17,8 +20,12 @@ export default Vue.extend({
   name: "Home",
   components: {},
   methods: {
-    checkLogin() {
-      if (!this.$store.state.login.loggedIn) this.$router.push({ path: "/login" });
+    checkLogin(): boolean {
+      if (!this.$store.state.login.loggedIn) {
+        this.$router.push({ path: "/login" });
+        return true;
+      }
+      return false
     },
     goToGuild(id: string) {
       this.$router.push({
@@ -28,7 +35,7 @@ export default Vue.extend({
     }
   },
   mounted: function() {
-    this.checkLogin();
+    if (this.checkLogin()) return
     this.$nextTick(async () => {
       this.$store.commit("showDrawer");
       if (!this.$store.state.fetchedGuilds) await this.$store.dispatch(`fetchGuilds`);

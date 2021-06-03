@@ -1,15 +1,18 @@
 <template>
   <div class="guildOverview">
-    <div class="data" v-if="loaded && config != undefined">
+    <div class="data" v-if="loaded && config !== undefined">
       <h1>{{$store.state.selectedGuildName}}</h1>
       <div class="info-cards">
         <InfoCard title="Ekkor csatlakozott a bot" :value="format(new Date(config.guild.JoinedAt))"/>
         <InfoCard title="Egyenleged" :value="`${config.wallet.Balance}$`"/>
         <InfoCard title="Szinted" :value="`${config.wallet.Lvl}`"/>
         <InfoCard title="Xp-d" :value="`${config.wallet.Xp}`"/>
+        <InfoCard title="Adminisztrátor" :value="parseInt(guild.Permissions, 2) & 0x8 === 8 ? `Igen` : `Nem`"/>
+        {{parseInt(guild.Permissions, 2) & 0x8}}
+        {{parseInt(guild.Permissions, 2) & 0x8 === 8}}
       </div>
     </div>
-    <div class="loading" v-if="!loaded || config == undefined">
+    <div class="loading" v-if="!loaded || config === undefined">
       <h1>Betöltés...</h1>
     </div>
   </div>
@@ -26,12 +29,14 @@ export default Vue.extend({
   data: () => ({
     guildId: "",
     config: {},
+    guild: {},
     loaded: false
   }),
   async mounted() {
     this.guildId = this.$route.params.id
     if (this.$store.state.guildConfigs[this.guildId] == null) await this.$store.dispatch("fetchGuildConfig", this.guildId)
     this.config = this.$store.state.guildConfigs[this.guildId]
+    this.guild = this.$store.state.guilds.find((g: any) => g.GID == this.guildId)
     this.$store.commit("setSelectedGuildName", this.$store.state.guilds.find((g: any) => g.GID == this.guildId).Name)
     this.loaded = true
   },

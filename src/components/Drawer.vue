@@ -52,7 +52,7 @@ export default Vue.extend({
 
 <style lang="scss">
 :root {
-  --drawer-width: 12vw;
+  --drawer-width: 216px;
 }
 .drawer {
   display: flex;
@@ -62,6 +62,7 @@ export default Vue.extend({
   overflow: hidden;
   height: 100%;
   color: #fff;
+  flex-shrink: 0;
   .category-name {
     margin-top: 10px;
     overflow: hidden;

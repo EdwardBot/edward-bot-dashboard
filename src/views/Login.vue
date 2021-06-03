@@ -24,16 +24,15 @@ import {BASE_URL} from "@/utils/format";
 
 export default Vue.extend({
   name: `Login`,
-  components: {},
-  data: () => {
-    return {
-    };
-  },
   methods: {
     redirect() {
       const win = window.open(`${BASE_URL}/v1/auth/login`, `OAuth2`, "status=0,width=530,height=850");
-      if (win != null) {
+      if (win == null) {
         console.log(`Error opening window`)
+        this.$store.dispatch(`triggerError`, {
+          title: `Hiba!`,
+          content: `Nem sikerült megnyitni a bejelentkezési ablakot! Próbáld meg engedélyezni a felugró ablakokat a böngésződben.`
+        })
       }
     }
   },
