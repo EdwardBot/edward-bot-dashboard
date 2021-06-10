@@ -33,12 +33,10 @@ export default Vue.extend({
     if (localStorage.getItem("token") && localStorage.getItem("s_id")) {
       this.$store.commit(`setToken`, localStorage.getItem(`token`))
       this.$store.commit(`setId`, localStorage.getItem("s_id"))
-      await this.$store.dispatch(`refresh`)
-      if (this.$store.state.login.loggedIn) {
-        await this.$router.push({
-          path: `/`
-        })
+      if (this.$route.path != `/login`) {
+        this.$store.commit(`setLastUrl`, this.$route.path)
       }
+      await this.$store.dispatch(`refresh`, this.$router)
       await this.$store.dispatch(`fetchUserInfo`)
     }
   }

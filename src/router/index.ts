@@ -2,9 +2,6 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-import GuildOverview from "@/views/guild/GuildOverview.vue";
-import Profile from "@/views/Profile.vue";
-import GuildCustomCommands from "@/views/guild/GuildCustomCommands.vue";
 
 Vue.use(VueRouter)
 

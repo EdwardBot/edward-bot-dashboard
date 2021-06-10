@@ -15,6 +15,10 @@ import Vue from 'vue'
 export default Vue.extend({
   name: "GuildCustomCommands",
   async mounted() {
+    if (!this.$store.state.login.loggedIn) {
+      await this.$router.push({ path: "/login" });
+      return;
+    }
     if (this.$store.state.guidCommands[this.$route.params.id] == undefined) await this.$store.dispatch("fetchCustomCommands", this.$route.params.id)
   },
   computed: {

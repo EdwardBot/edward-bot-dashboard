@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {BASE_URL} from "@/utils/format";
+import VueRouter from "vue-router";
 
 Vue.use(Vuex)
 
@@ -27,7 +28,8 @@ export default new Vuex.Store({
             title: "Hiba!",
             content: "Lorem ipsum dolor sit amet.",
             visible: false
-        }
+        },
+        lastUrl: ``
     },
     mutations: {
         hideDrawer(state: any) {
@@ -60,7 +62,7 @@ export default new Vuex.Store({
             state.guilds = guilds
         },
         setGuildConfig(state: any, gConfig: any) {
-            state.guildConfigs[gConfig.guild.GuildId] = gConfig
+            state.guildConfigs[gConfig.guild[`guild_id`]] = gConfig
         },
         cacheUser(state: any, user: any) {
             state.users[user.UserId] = user
@@ -83,6 +85,9 @@ export default new Vuex.Store({
         setErrorDetails(state: any, error: Error) {
             state.error.title = error.title
             state.error.content = error.content
+        },
+        setLastUrl(state: any, url: string) {
+            state.lastUrl = url
         }
     },
     actions: {
@@ -109,7 +114,7 @@ export default new Vuex.Store({
             store.commit(`setDiscriminator`, ``)
             store.commit(`setSessionId`, -1)
         },
-        async refresh(store) {
+        async refresh(store, router: VueRouter) {
             try {
                 const res = await axios.post(`${BASE_URL}/v1/auth/refresh`, {
                     id: store.state.login.id
@@ -129,6 +134,9 @@ export default new Vuex.Store({
                     store.commit(`setId`, payload.id)
                     store.commit(`setSessionId`, payload.sessionId)
                     store.commit(`setLoggedIn`, true)
+                    if (store.state.lastUrl != `` && store.state.lastUrl != router.currentRoute.path && store.state.lastUrl != `/login`) {
+                        await router.push({path: store.state.lastUrl})
+                    }
                 }
                 await store.dispatch(`fetchGuilds`)
             } catch (e) {
@@ -136,6 +144,7 @@ export default new Vuex.Store({
                     title: `Hiba!`,
                     content: `A munkameneted lejárt. Jelentkezz be újra.`
                 })
+                console.log(e)
             }
         },
         async fetchUserInfo(store) {
@@ -192,7 +201,6 @@ export default new Vuex.Store({
             } else {
                 store.commit("setGuildConfig", res.data)
             }
-            console.log(`Cucc`)
         },
         async fetchUser(store, data: { gId: string; uId: string }) {
             const res = await axios.get(`${BASE_URL}/v1/guild/guild/${data.gId}/user/${data.uId}`, {
