@@ -44,6 +44,11 @@ export default Vue.extend({
         path: `/guild/${this.$store.state.selectedGuild}/custom-commands`,
         icon: `animation-outline`,
         id: 101
+      }, {
+        name: `Kidobások`,
+        path: `/guild/${this.$store.state.selectedGuild}/kicks`,
+        icon: `karate`,
+        id: 102
       }]
     }
   }

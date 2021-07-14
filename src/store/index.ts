@@ -160,6 +160,8 @@ export default new Vuex.Store({
                 })
                 store.dispatch(`logout`, false)
             } else {
+                console.log(res.data);
+                
                 const payload = res.data
                 store.commit(`setUser`, payload)
             }

@@ -1,11 +1,12 @@
 <template>
   <div class="guild-custom-commands">
-    <h1>Egyedi parancsok({{commands.length}}):</h1>
+    <!--<h1>Egyedi parancsok({{commands.length}}):</h1>
     <div v-bind:key="cmd.Name" v-for="cmd in commands">
       Parancs: {{cmd.Name}}<br>
       Válasz: {{cmd.Response}}<br><br>
       <v-btn @click="$store.dispatch('deleteCommand', {name: cmd.Name, guildId: cmd.GuildId})">Törlés</v-btn>
-    </div>
+    </div>-->
+    <h1>Hamarosan...</h1>
   </div>
 </template>
 
@@ -19,12 +20,12 @@ export default Vue.extend({
       await this.$router.push({ path: "/login" });
       return;
     }
-    if (this.$store.state.guidCommands[this.$route.params.id] == undefined) await this.$store.dispatch("fetchCustomCommands", this.$route.params.id)
+    //if (this.$store.state.guidCommands[this.$route.params.id] == undefined) await this.$store.dispatch("fetchCustomCommands", this.$route.params.id)
   },
   computed: {
-    commands: function(): any {
+    /*commands: function(): any {
       return this.$store.state.guidCommands[this.$route.params.id]
-    }
+    }*/
   }
 })
 </script>

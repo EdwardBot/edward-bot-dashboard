@@ -26,7 +26,8 @@ export default Vue.extend({
   name: `Login`,
   methods: {
     redirect() {
-      const win = window.open(`${BASE_URL}/v1/auth/login`, `OAuth2`, "status=0,width=530,height=850");
+      const win = window.open(`https://discord.com/api/oauth2/authorize?client_id=747157043466600477&redirect_uri=${encodeURI(`${BASE_URL}/v1/auth/oauth`)}&response_type=code&scope=identify%20guilds`, `OAuth2`, "status=0,width=530,height=850");
+
       if (win == null) {
         console.log(`Error opening window`)
         this.$store.dispatch(`triggerError`, {

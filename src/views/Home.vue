@@ -2,9 +2,9 @@
   <div class="home">
     <div class="container" v-if="$store.state.fetchedGuilds">
       <h1>Szerverek:</h1>
-      <div v-bind:key="g.ID" v-for="g in this.$store.state.guilds" class="guild-card" @click="goToGuild(g.GID)">
-        <img :src="`https://cdn.discordapp.com/icons/${g.GID}/${g.Icon}.webp?size=128`" :alt="`${g.Name} ikonja`">
-        <h1>{{g.Name}}</h1>
+      <div v-bind:key="g.guild_id" v-for="g in this.$store.state.guilds" class="guild-card" @click="goToGuild(g.guild_id)">
+        <img :src="`https://cdn.discordapp.com/icons/${g.guild_id}/${g.icon}.webp?size=128`" :alt="`${g.name} ikonja`">
+        <h1>{{g.name}}</h1>
       </div>
     </div>
     <div class="container" v-if="!$store.state.fetchedGuilds">

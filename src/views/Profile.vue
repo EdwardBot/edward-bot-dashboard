@@ -2,11 +2,12 @@
   <div class="profile-container">
     <h1>Profil</h1>
     <div class="cards">
-      <img :src="`https://cdn.discordapp.com/avatars/${$store.state.login.id}/${$store.state.login.user.AvatarID}.png?size=128`" alt="Profilkép">
-      <InfoCard title="Felhasználónév" :value="$store.state.login.user.UserName"/>
-      <InfoCard title="Sorozatszám" :value="$store.state.login.user.Discriminator"/>
-      <InfoCard title="Bottal közös szerverek" :value="$store.state.guilds.length"/>
+      <img :src="avatarUri" alt="Profilkép">
+      <InfoCard title="Felhasználónév" :value="$store.state.login.user.user_name"/>
+      <InfoCard title="Sorozatszám" :value="$store.state.login.user.discriminator"/>
+      <InfoCard title="Bottal közös szerverek" :value="$store.state.guilds != undefined ? $store.state.guilds.lenght : `0`"/>
       <InfoCard title="Nitró típusa" :value="nitroType"/>
+      <router-link to="/guild/522147723651055617">Igen</router-link>
     </div>
   </div>
 </template>
@@ -24,14 +25,21 @@ export default Vue.extend({
   },
   computed: {
     nitroType: function (): string {
-      switch (this.$store.state.login.user.PremiumType) {
+      switch (this.$store.state.login.user.premium_type) {
         default:
         case 0:
           return `Nincs`
         case 1:
-          return `Classic`
+          return `Nitró Classic`
         case 2:
-          return `Sima`
+          return `Nitró`
+      }
+    },
+    avatarUri: function(): string {
+      if ((this.$store.state.login.user.avatar_id as string).startsWith("a_")) {
+        return `https://cdn.discordapp.com/avatars/${this.$store.state.login.user.user_id}/${this.$store.state.login.user.avatar_id}.gif?size=128`
+      } else {
+        return `https://cdn.discordapp.com/avatars/${this.$store.state.login.user.user_id}/${this.$store.state.login.user.avatar_id}.png?size=128`
       }
     }
   }

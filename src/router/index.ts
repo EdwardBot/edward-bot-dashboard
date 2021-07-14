@@ -32,6 +32,10 @@ const routes: Array<RouteConfig> = [
     path: `/guild/:id/custom-commands`,
     name: `GuildCustomCommands`,
     component: () => import(/* webpackChunkName: "main" */ '../views/guild/GuildCustomCommands.vue')
+  }, {
+    path: `/guild/:id/kicks`,
+    name: `GuildKicks`,
+    component: () => import(/* webpackChunkName: "main" */ '../views/guild/GuildKicks.vue')
   }
 ]
 

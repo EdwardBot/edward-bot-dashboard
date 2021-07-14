@@ -42,7 +42,7 @@ export default Vue.extend({
       return this.$store.state.login.loggedIn;
     },
     displayName: function(): string {
-      return `${this.$store.state.login.user.UserName}#${this.$store.state.login.user.Discriminator}`;
+      return `${this.$store.state.login.user.user_name}#${this.$store.state.login.user.discriminator}`;
     },
     shouldOpenDrawer: function(): boolean {
       return this.$store.state.hasDrawer;
